@@ -1,13 +1,34 @@
-const loadPhones = async(searchText )=>{
+const loadPhones = async(searchText, dataLimit )=>{
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
     const res = await fetch(url);
     const data = await res.json();
-    displayPhones(data.data);
+    displayPhones(data.data, dataLimit);
 }
 
-const displayPhones=phones=>{
+const displayPhones=(phones,dataLimit)=>{
     const phoneContianer = document.getElementById('phone-container');
-    phoneContianer.innerText = ``
+    phoneContianer.innerText = ``;
+    //display 10 phone only
+    // phones = phones.slice(0,10)
+    const showAll = document.getElementById('show-all');
+    if(dataLimit && phones.length > 10){
+        phones = phones.slice(0, 10);
+        showAll.classList.remove('d-none');
+    }
+    else{
+        showAll.classList.add('d-none')
+    }
+
+    // display no phones found
+    const noPhone = document.getElementById('no-found-message');
+    if(phones.length === 0){
+        noPhone.classList.remove('d-none');
+    } 
+    else{
+        noPhone.classList.add('d-none')
+    }
+
+    //display all phones 
     phones.forEach(phone =>{
     const phoneDiv =document.createElement('div');
     phoneDiv.classList.add('col');
@@ -24,16 +45,44 @@ const displayPhones=phones=>{
     
     `;
     phoneContianer.appendChild(phoneDiv)
-    })    
+    });
+    toggleSpinner(false);
+    
+    //stop loader
 }
 
+const processSearch = (dataLimit) =>{
+       toggleSpinner(true)
+       const searchField = document.getElementById('searchField');
+       const searchText = searchField.value;
+       loadPhones(searchText, dataLimit)
+}
 
+//handle search button click
 document.getElementById('btn-search').addEventListener('click', function(){
-    const searchField = document.getElementById('searchField');
-    const searchText = searchField.value;
-    loadPhones(searchText)
-
+    //start loader
+ 
+    processSearch(10)
 
 })
 
-loadPhones()
+const toggleSpinner = isLoading =>{
+    const loaderContainer = document.getElementById('loader');
+    if(isLoading){
+        loaderContainer.classList.remove('d-none')
+    }
+    else{
+        loaderContainer.classList.add('d-none')
+    }
+}
+
+
+//its a thrid choice not best way to show all data
+
+document.getElementById('btn-show-all').addEventListener('click', function(){
+
+    processSearch();
+})
+
+
+// loadPhones()

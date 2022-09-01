@@ -20,10 +20,27 @@
         </section>
 
          <!-- card contianer section  -->
-        <section id="phone-container" class="row row-cols-1 row-cols-md-4 g-4">
+        <section>
+            <div id="phone-container" class="row row-cols-1 row-cols-md-4 g-4">
+
+            </div>
+            <div id="no-found-message" class="d-none">
+                <h3 class="text-warning">No Phone Found!!. Please Try a New Search</h3>
+            </div>
+            <div id="show-all" class="text-center d-none">
+                <div id="btn-show-all" class="btn btn-primary">Show All</div>
+            </div>
            
         </section>
 
+        <!-- spinner loading -->
+        <section id="loader" class="d-none">
+            <div style="height: 400px;" class="d-flex justify-content-center align-items-center">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </section>
 
 
     </main>
