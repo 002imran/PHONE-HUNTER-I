@@ -37,10 +37,13 @@ const displayPhones=(phones,dataLimit)=>{
             <img src="${phone.image}" class="card-img-top" alt="...">
             <div class="card-body">
                <h5 class="card-title">${phone.phone_name}</h5>
-                <p class="card-text">
-                    ${phone.slug}
-                </p>
-            </div>
+               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit nihil adipisci velit. Nobis atque quo quaerat, pariatur officiis dolores aliquid!<p>
+               <button onclick="loadPhoneDetails('${phone.slug}')" href="#" class="btn btn-primary" data-toggle="modal" data-target="#phoneDetailModal">Show Details</button>    
+               
+                
+    
+               
+           </div>
         </div>
     
     `;
@@ -66,6 +69,14 @@ document.getElementById('btn-search').addEventListener('click', function(){
 
 })
 
+// search input filed enter key handler
+document.getElementById('searchField').addEventListener('keypress', function(e){
+    if(e.key === 'Enter'){
+        processSearch(10)
+    }
+})
+
+
 const toggleSpinner = isLoading =>{
     const loaderContainer = document.getElementById('loader');
     if(isLoading){
@@ -85,4 +96,24 @@ document.getElementById('btn-show-all').addEventListener('click', function(){
 })
 
 
-// loadPhones()
+const loadPhoneDetails = async id =>{
+    const url = ` https://openapi.programming-hero.com/api/phone/${id}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    displayPhoneDetails(data.data);
+}
+
+const displayPhoneDetails = phone =>{
+    console.log(phone,'llllox');
+    const modalTitle = document.getElementById('phoneDetailModalLabel');
+    modalTitle.innerText = phone.name;
+
+    const phoneDetails = document.getElementById('phone-details');
+    phoneDetails.innerHTML = `
+       <p>Release Date: ${phone.releaseDate ? phone.releaseDate : 'No realse date found'}</p>
+       <p>Others: ${phone.others ? phone.others.Bluetooth : 'No bluetooh found'}</p>
+       <p>Storage: ${phone.mainFeatures.storage}</>
+    `
+}
+
+loadPhones('oppo')
